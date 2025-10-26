@@ -1,46 +1,7 @@
 <script setup lang="ts">
-import EventCard from './components/EventCard.vue'
-import EventDetails from './components/EventDetails.vue'
-import StudentView from './StudentView.vue'
-import type { Event } from './types'
+import { RouterLink, RouterView } from 'vue-router'
 import { ref } from 'vue'
-
-// 模拟活动数据
-const events = ref<Event[]>([
-  {
-    id: 5928101,
-    category: 'animal welfare',
-    title: 'Cat Adoption Day',
-    description: 'Find your new feline friend at this event.',
-    location: 'Meow Town',
-    date: 'January 28, 2022',
-    time: '12:00',
-    petsAllowed: true,
-    organizer: 'Kat Laydee'
-  },
-  {
-    id: 4582797,
-    category: 'food',
-    title: 'Community Gardening',
-    description: 'Join us as we tend to the community edible plants.',
-    location: 'Flora City',
-    date: 'March 14, 2022',
-    time: '10:00',
-    petsAllowed: true,
-    organizer: 'Fern Pollin'
-  }
-])
-
-// 简单的页面切换
-const currentView = ref('events')
-
-function showEvents() {
-  currentView.value = 'events'
-}
-
-function showStudents() {
-  currentView.value = 'students'
-}
+const globalPerPage = ref(2)
 </script>
 
 <template>
@@ -48,27 +9,24 @@ function showStudents() {
     <header>
       <div class="wrapper">
         <nav>
-          <a href="#" @click="showEvents">Events</a> |
-          <a href="#" @click="showStudents">Students</a>
+          <RouterLink :to="{ name: 'event-list-view' }">Event</RouterLink> |
+          <RouterLink :to="{ name: 'students' }">Students</RouterLink> |
+          <RouterLink :to="{ name: 'about' }">About</RouterLink>
         </nav>
-      </div>
-    </header>
-
-    <main>
-      <div v-if="currentView === 'events'">
-        <h1>Events For Good</h1>
-        <div class="events">
-          <div v-for="event in events" :key="event.id" class="event-container">
-            <EventCard :event="event" />
-            <EventDetails :event="event" />
-          </div>
+        <div class="global-page-size">
+          <label>Event per page: </label>
+          <select v-model="globalPerPage">
+            <option value="2">Two Events</option>
+            <option value="4">Four Events</option>
+            <option value="6">Six Events</option>
+            <option value="8">Eight Events</option>
+          </select>
         </div>
       </div>
-
-      <div v-if="currentView === 'students'">
-        <StudentView />
-      </div>
-    </main>
+      
+    </header>
+    
+    <RouterView :per-page="globalPerPage" />
   </div>
 </template>
 
@@ -80,30 +38,39 @@ function showStudents() {
   text-align: center;
   color: #2c3e50;
 }
+
 nav {
   padding: 30px;
 }
+
 nav a {
   font-weight: bold;
   color: #2c3e50;
-  text-decoration: none;
-  margin: 0 10px;
-  cursor: pointer;
 }
-nav a:hover {
+
+nav a.router-link-exact-active {
   color: #42b983;
 }
-.events {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.global-page-size {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
 }
-.event-container {
-  margin-bottom: 25px;
+
+.global-page-size label {
+  font-weight: bold;
+  margin-right: 10px;
 }
-h1 {
-  margin: 20px 0;
+
+.global-page-size select {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
 }
+
 h2 {
   font-size: 20px;
 }

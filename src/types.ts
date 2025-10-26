@@ -9,10 +9,12 @@ export interface Event {
   petsAllowed: boolean
   organizer: string
 }
-
 export interface Student {
   id: number
   name: string
   surname: string
   gpa: number
+  image: string
+  penAmount: number
+  description: string
 }
