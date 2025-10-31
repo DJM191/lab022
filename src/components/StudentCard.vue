@@ -1,35 +1,41 @@
 <script setup lang="ts">
-import { type Event } from '../types'
-import EventMeta from './EventMeta.vue'
+import type { Student } from '../types'
+
 defineProps<{
-  event: Event
+  student: Student
 }>()
 </script>
 
 <template>
-  <RouterLink class="event-link" :to="{ name: 'event-detail-view', params: { id: event.id } }">
-    <div class="event-card">
-      <h2>{{ event.title }}</h2>
-      <span>@{{ event.time }} on {{ event.date }}</span>
-      <EventMeta :event="event" />
+  <div class="student-card">
+    <h2>{{ student.name }} {{ student.surname }}</h2>
+    <div class="student-info">
+      <span class="gpa">GPA: {{ student.gpa }}</span>
     </div>
-  </RouterLink>
+  </div>
 </template>
 
 <style scoped>
-.event-card {
+.student-card {
   padding: 20px;
   width: 250px;
-  cursor: pointer;
   border: 1px solid #39495c;
   margin-bottom: 18px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
-.event-card:hover {
+
+.student-card:hover {
   transform: scale(1.01);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
 }
-.event-link {
-  text-decoration: none;
+
+.student-info {
+  margin-top: 10px;
+}
+
+.gpa {
+  font-weight: bold;
   color: #2c3e50;
 }
 </style>
